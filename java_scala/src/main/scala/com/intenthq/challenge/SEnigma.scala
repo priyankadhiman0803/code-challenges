@@ -1,6 +1,6 @@
-package com.intenthq.challenge;
-
-object SEnigma {
+package com.intenthq.challenge
+import scala.collection.immutable.ListMap
+object SEnigma extends App{
 
   // We have a system to transfer information from one place to another. This system
   // involves transferring only list of digits greater than 0 (1-9). In order to decipher
@@ -22,6 +22,42 @@ object SEnigma {
   // Following the above rules, the message would be: “1N73N7 HQ”
   // Check the tests for some other (simpler) examples.
 
-  def deciphe(map: Map[Int, Char])(message: List[Int]): String = ???
+  def deciphe(listMap: ListMap[Int, Char])(msg: List[Int]): String = {
+    var powerList = msg.mkString
+    val mapKeys = listMap.keys.toList
+    val sortedKeys = if(mapKeys.isEmpty) List.empty else newSort(mapKeys.head,listMap, List.empty)
+    val codedMessage: List[String] = sortedKeys.map { x =>
+      if(powerList.contains(x.toString)) {
+        powerList = powerList.replaceAll(x.toString,listMap(x).toString)
+      }
+      powerList
+    }
+    codedMessage.reverse.head
+  }
+
+  def newSort(firstEle: Int, listMap: ListMap[Int,Char], sortedList: List[Int]) : List[Int] = {
+    val mapKeys = listMap.keys.toList
+    if(mapKeys.isEmpty) sortedList else {
+      mapKeys match {
+        case Nil => sortedList
+        case x :: tail => {
+          val listWithSameStringStart: List[Int] = mapKeys.toSet
+            .filter(e => e.toString.contains(firstEle.toString)).toList
+          val setWithSameSTringStratSort: List[Int] = listWithSameStringStart.sortWith(_ > _).toList
+          if(tail.isEmpty ) {
+            sortedList ++ List(x)
+          }
+          else {
+            if(setWithSameSTringStratSort .isEmpty) {
+              newSort(tail.head,listMap - x, sortedList ++ List(x) )
+            } else {
+              newSort(tail.head,listMap -- setWithSameSTringStratSort, sortedList ++ setWithSameSTringStratSort )
+            }
+          }
+        }
+      }
+    }
+  }
+
 
 }

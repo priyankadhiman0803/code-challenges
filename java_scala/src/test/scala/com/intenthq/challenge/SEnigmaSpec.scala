@@ -2,12 +2,14 @@ package com.intenthq.challenge
 
 import org.specs2.mutable.Specification
 
+import scala.collection.immutable.ListMap
+
 class SEnigmaSpec extends Specification {
 
   section("scala")
   section("enigma")
   "SEnigmaSpec" should {
-    val map = Map(23 -> 'N', 234 -> ' ', 89 -> 'H', 78 -> 'Q', 37 -> 'A')
+    val map = ListMap(23 -> 'N', 234 -> ' ', 89 -> 'H', 78 -> 'Q', 37 -> 'A')
     val deciphe = SEnigma.deciphe(map) _
 
     "(2,3) is 'N'" in {

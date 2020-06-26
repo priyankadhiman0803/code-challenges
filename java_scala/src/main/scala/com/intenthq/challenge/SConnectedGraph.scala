@@ -14,6 +14,15 @@ object SConnectedGraph {
   // run(a, b) == true
   // run(a, c) == true
   // run(b, d) == false
-  def run(source: Node, target: Node): Boolean = ???
 
+  def run(source: Node, target: Node): Boolean = {
+    def run2(source:Node, target:Node, visitedNodes: List[Node]) : Boolean = {
+      if(visitedNodes.contains(source)) false else {
+        if(source == target) true else {
+          source.edges.exists(src => run2(src,target,(source :: visitedNodes)))
+        }
+      }
+    }
+    run2(source, target, List.empty)
+  }
 }
